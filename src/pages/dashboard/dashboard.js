@@ -26,8 +26,8 @@ export default function DashboardPage() {
         </button>
       </div>
       <div className="player-list">
-        {players.map((player) => {
-          return <p>Player: {player.id}</p>;
+        {Object.keys(players).map((player) => {
+          return <p key={player}>Player: {players[player].id}</p>;
         })}
       </div>
       <header className="nav">

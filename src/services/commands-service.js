@@ -6,6 +6,7 @@ export default function CommandsService(state, dispatch, wsClient) {
   const COMMANDS = {
     REGISTER: "REGISTER",
     USERS: "USERS",
+    ACTIONS: "ACTIONS",
   };
   wsClient.onopen = function () {
     console.log("WebSocket Client Connected");
@@ -51,8 +52,28 @@ export default function CommandsService(state, dispatch, wsClient) {
     }
   }
 
+  function onActions(callback) {
+    if (callback) {
+      handlers.push({
+        topic: COMMANDS.ACTIONS,
+        handle: callback,
+      });
+    }
+  }
+
+  function notifyMovement({ x, y }) {
+    wsClient.send(
+      JSON.stringify({
+        command: COMMANDS.ACTIONS,
+        payload: { x, y },
+      })
+    );
+  }
+
   return {
     register,
     onNewPlayers,
+    onActions,
+    notifyMovement,
   };
 }

@@ -1,7 +1,8 @@
 import "./game-viewport.scss";
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect, useState, useContext } from "react";
+import CommandsServiceContext from "../../services/commands-service.provider";
 function GameViewport() {
+  const commandsService = useContext(CommandsServiceContext);
   const [canvas, setCanvas] = useState();
   const [canvasContext, setCanvasContext] = useState();
   const [player1, setPlayer1] = useState({
@@ -26,9 +27,35 @@ function GameViewport() {
     const context = canvas.getContext("2d");
     setCanvas(canvas);
     setCanvasContext(context);
-    dataMockUp();
+    // dataMockUp();
   }, []);
 
+  useEffect(() => {
+    if (!commandsService.onActions) return;
+    commandsService?.onActions((playerActions) => {
+      console.log(playerActions);
+      setEnemyMovement(
+        Object.keys(playerActions).map((playerId, index) => ({
+          name: playerId,
+          x: playerActions[playerId]?.position?.x,
+          y: playerActions[playerId]?.position?.y,
+          color: getColor(index),
+        }))
+      );
+    });
+  }, [commandsService]);
+
+  const getColor = (index) => {
+    let colors = [
+      "rgb(200, 200, 100)",
+      "rgb(100, 200, 100)",
+      "rgb(0, 200, 100)",
+      "rgb(200, 100, 100)",
+      "rgb(200, 0, 100)",
+      "rgb(200, 200, 0)",
+    ];
+    return colors[index];
+  };
   const dataMockUp = () => {
     setTimeout(() => {
       if (enemyMovement[0].y > 1000) {
@@ -55,9 +82,9 @@ function GameViewport() {
     if (canvasContext) {
       canvasContext.clearRect(0, 0, canvas.width, canvas.height);
       drawPlayer(player1);
-      drawPlayer(enemyMovement[0]);
-      drawPlayer(enemyMovement[1]);
-      drawPlayer(enemyMovement[2]);
+      enemyMovement.forEach((enemy) => {
+        drawPlayer(enemy);
+      });
     }
   };
 
@@ -76,6 +103,10 @@ function GameViewport() {
       ...player1,
       x: (player1.x = e.clientX - canvasPos.x),
       y: (player1.y = e.clientY - canvasPos.y),
+    });
+    commandsService.notifyMovement({
+      x: e.clientX - canvasPos.x,
+      y: e.clientY - canvasPos.y,
     });
   };
 
