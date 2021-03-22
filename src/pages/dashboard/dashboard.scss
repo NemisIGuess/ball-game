@@ -1,0 +1,14 @@
+.dashboard-page {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  grid-template-rows: min-content min-content;
+  grid-template-areas: "main-top bar-right-top" "main-bottom bar-right-bottom";
+
+  .player {
+    grid-area: bar-right-top;
+  }
+
+  > header {
+    grid-area: main-top;
+  }
+}

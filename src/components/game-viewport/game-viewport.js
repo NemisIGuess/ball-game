@@ -1,12 +1,12 @@
-import './App.css';
-import React, { useEffect, useState } from 'react';
+import "./game-viewport.scss";
+import React, { useEffect, useState } from "react";
 
-function App() {
+function GameViewport() {
   const [canvas, setCanvas] = useState();
   const [canvasContext, setCanvasContext] = useState();
   const [player1, setPlayer1] = useState({
-    name: 'nemis',
-    color: 'rgb(223, 128, 128)',
+    name: "nemis",
+    color: "rgb(223, 128, 128)",
     x: 0,
     y: 0,
   });
@@ -14,16 +14,16 @@ function App() {
   // const [mouseX, setMouseX] = useState(400);
   // const [mouseY, setMouseY] = useState(400);
   const [enemyMovement, setEnemyMovement] = useState([
-    { name: 'paquito', color: 'rgb(199, 201, 98)', x: 150, y: 0 },
-    { name: 'periquito', color: 'rgb(139, 201, 98)', x: 350, y: 0 },
-    { name: 'juanito', color: 'rgb(98, 201, 201)', x: 650, y: 0 },
-    { name: 'pedrito', color: 'rgb(219, 114, 179)', x: 850, y: 0 },
+    { name: "paquito", color: "rgb(199, 201, 98)", x: 150, y: 0 },
+    { name: "periquito", color: "rgb(139, 201, 98)", x: 350, y: 0 },
+    { name: "juanito", color: "rgb(98, 201, 201)", x: 650, y: 0 },
+    { name: "pedrito", color: "rgb(219, 114, 179)", x: 850, y: 0 },
   ]);
 
   //
   useEffect(() => {
-    const canvas = document.getElementById('game-canvas');
-    const context = canvas.getContext('2d');
+    const canvas = document.getElementById("game-canvas");
+    const context = canvas.getContext("2d");
     setCanvas(canvas);
     setCanvasContext(context);
     dataMockUp();
@@ -98,21 +98,21 @@ function App() {
     if (canvas === null || canvas === undefined) {
       return;
     }
-    canvas.addEventListener('mousemove', (e) => {
+    canvas.addEventListener("mousemove", (e) => {
       setMousePosition(e);
     });
 
     return () =>
-      canvas.removeEventListener('mousemove', (e) => {
+      canvas.removeEventListener("mousemove", (e) => {
         setMousePosition(e);
       });
   }, [canvas]);
 
   return (
-    <div className="App">
+    <div className="game-viewport">
       <canvas id="game-canvas" width="1000px" height="1000px"></canvas>
     </div>
   );
 }
 
-export default App;
+export default GameViewport;
