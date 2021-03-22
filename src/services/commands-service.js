@@ -5,6 +5,7 @@ export default function CommandsService(state, dispatch, wsClient) {
 
   const COMMANDS = {
     REGISTER: "REGISTER",
+    USERS: "USERS",
   };
   wsClient.onopen = function () {
     console.log("WebSocket Client Connected");
@@ -41,7 +42,17 @@ export default function CommandsService(state, dispatch, wsClient) {
     );
   }
 
+  function onNewPlayers(callback) {
+    if (callback) {
+      handlers.push({
+        topic: COMMANDS.USERS,
+        handle: callback,
+      });
+    }
+  }
+
   return {
     register,
+    onNewPlayers,
   };
 }

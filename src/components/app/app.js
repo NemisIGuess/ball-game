@@ -10,7 +10,10 @@ export default function App() {
   const [wsClient, setWsClient] = useState();
 
   useEffect(() => {
-    let client = new W3CWebSocket("ws://localhost:8080", "echo-protocol");
+    let client = new W3CWebSocket(
+      "ws://9e63eb6ccdf7.ngrok.io",
+      "echo-protocol"
+    );
     setWsClient(client);
   }, []);
 

@@ -6,6 +6,7 @@ import "./dashboard.scss";
 export default function DashboardPage() {
   const commandsService = useContext(CommandsServiceContext);
   const [player, setPlayer] = useState({});
+  const [players, setPlayers] = useState([]);
 
   return (
     <main className="dashboard-page">
@@ -16,10 +17,18 @@ export default function DashboardPage() {
             commandsService.register((payload) => {
               setPlayer({ id: payload.id });
             });
+            commandsService.onNewPlayers((payload) => {
+              setPlayers(payload);
+            });
           }}
         >
           Register
         </button>
+      </div>
+      <div className="player-list">
+        {players.map((player) => {
+          return <p>Player: {player.id}</p>;
+        })}
       </div>
       <header className="nav">
         <h1>BALL GAMES</h1>
